@@ -21,6 +21,5 @@ func MountRoutes(r *mux.Router) *mux.Router{
 
 //Gathers all routes from routes/* files
 func LoadRoutes() []Route {
-
-	return []Route{}
+	return AuthRoutes
 }

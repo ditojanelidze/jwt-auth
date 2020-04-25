@@ -9,7 +9,6 @@ func WrapResponse(handler http.HandlerFunc) http.HandlerFunc {
 	return restResponse(responseLogger(handler))
 }
 
-
 //Turn responses into json
 func restResponse(handler http.HandlerFunc) http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request){
