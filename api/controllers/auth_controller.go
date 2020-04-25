@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/ditojanelidze/jwt-auth/api/services"
 	"github.com/ditojanelidze/jwt-auth/response"
 	"net/http"
 )
@@ -12,7 +13,8 @@ func Auth(w http.ResponseWriter, r *http.Request){
 		response.JSON(w,http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	response.JSON(w, http.StatusOK, params)
+	token, err := services.AuthService(params.Username)
+	response.JSON(w, http.StatusOK, token)
 }
 
 func authParams(r *http.Request) (interface{}, error) {
