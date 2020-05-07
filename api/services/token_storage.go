@@ -10,10 +10,12 @@ import (
 	"os"
 	"time"
 )
+
 var (
 	EXPIRATION = time.Hour * 2
 	REFRESH_LENGTH = 20
 )
+
 func RetrieveTokens(user models.User) (map[string]string, error){
 	tokenString, err := generateAccessToken(user.ID)
 	if err != nil{
@@ -25,7 +27,6 @@ func RetrieveTokens(user models.User) (map[string]string, error){
 		"refresh_token": refreshToken,
 	}
 	storeInRedis(user, tokens)
-	fmt.Println(err.Error())
 	return tokens, err
 }
 
@@ -38,13 +39,15 @@ func generateAccessToken(id int64) (string, error){
 }
 
 func storeInRedis(user models.User, tokens map[string]string) {
-	fmt.Println(user)
-	redis_client := redis.NewClient(&redis.Options{
-		//fmt.Sprintf("%s:%s",initializers.REDIS_URL, initializers.REDIS_PORT)
-		Addr: "127.0.0.1:6379",
+	redis_client := redisClient()
+	x := redis_client.Set(tokens["refresh_token"], user.ID, EXPIRATION)
+	fmt.Println(x)
+}
+
+func redisClient() *redis.Client {
+	return redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:%s",initializers.REDIS_URL, initializers.REDIS_PORT),
 		Password: "",
 		DB: initializers.REDIS_DB,
 	})
-	key := fmt.Sprintf("%s_%d", "auth_tokens", user.ID)
-	redis_client.Set(key, tokens, EXPIRATION)
 }
