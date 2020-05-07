@@ -32,3 +32,22 @@ func Auth(w http.ResponseWriter, r *http.Request){
 
 	response.JSON(w, http.StatusOK, tokens)
 }
+
+func LogOut(w http.ResponseWriter, r *http.Request){
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		error_response := response.BadRequestError(err.Error())
+		response.JSON(w, error_response.Code, error_response)
+		return
+	}
+
+	data := struct{RefreshToken string}{}
+	if err = json.Unmarshal(body, &data); err != nil{
+		error_response := response.BadRequestError(err.Error())
+		response.JSON(w, error_response.Code, error_response)
+		return
+	}
+
+	services.LogOut(data.RefreshToken)
+	response.JSON(w, http.StatusOK, nil)
+}

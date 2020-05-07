@@ -5,8 +5,6 @@ import (
 	"github.com/dchest/uniuri"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/ditojanelidze/jwt-auth/api/models"
-	"github.com/ditojanelidze/jwt-auth/config/initializers"
-	"github.com/go-redis/redis/v7"
 	"os"
 	"time"
 )
@@ -39,15 +37,7 @@ func generateAccessToken(id int64) (string, error) {
 }
 
 func storeInRedis(user models.User, tokens map[string]string) {
-	redis_client := redisClient()
-	x := redis_client.Set(tokens["refresh_token"], user.ID, EXPIRATION)
+	redis := redisClient()
+	x := redis.Set(fmt.Sprintf("refresh_%s",tokens["refresh_token"]), user.ID, EXPIRATION)
 	fmt.Println(x)
-}
-
-func redisClient() *redis.Client {
-	return redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", initializers.REDIS_URL, initializers.REDIS_PORT),
-		Password: "",
-		DB:       initializers.REDIS_DB,
-	})
 }

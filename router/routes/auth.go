@@ -7,8 +7,13 @@ import (
 
 var AuthRoutes = []Route{
 	Route{
-		Uri: "/login",
-		Method: http.MethodPost,
+		Uri:     "/login",
+		Method:  http.MethodPost,
 		Handler: controllers.Auth,
+	},
+	Route{
+		Uri:     "/logout",
+		Method:  http.MethodDelete,
+		Handler: controllers.LogOut,
 	},
 }
