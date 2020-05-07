@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/ditojanelidze/jwt-auth/api/services"
 	"github.com/ditojanelidze/jwt-auth/response"
 	"io/ioutil"
@@ -41,13 +42,14 @@ func LogOut(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	data := struct{RefreshToken string}{}
+	data := struct{Token string}{}
+	fmt.Println(data)
 	if err = json.Unmarshal(body, &data); err != nil{
 		error_response := response.BadRequestError(err.Error())
 		response.JSON(w, error_response.Code, error_response)
 		return
 	}
 
-	services.LogOut(data.RefreshToken)
+	services.LogOut(data.Token)
 	response.JSON(w, http.StatusOK, nil)
 }

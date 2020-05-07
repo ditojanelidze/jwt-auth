@@ -38,6 +38,5 @@ func generateAccessToken(id int64) (string, error) {
 
 func storeInRedis(user models.User, tokens map[string]string) {
 	redis := redisClient()
-	x := redis.Set(fmt.Sprintf("refresh_%s",tokens["refresh_token"]), user.ID, EXPIRATION)
-	fmt.Println(x)
+	redis.Set(fmt.Sprintf("refresh_%s",tokens["refresh_token"]), user.ID, EXPIRATION)
 }
