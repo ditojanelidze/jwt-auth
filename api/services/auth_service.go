@@ -6,22 +6,22 @@ import (
 	"github.com/ditojanelidze/jwt-auth/database"
 )
 
-func Authenticate(username string, password string) (string, error) {
-	var token string
+func Authenticate(username string, password string) (map[string]string, error) {
+	var tokens map[string]string
 	db, err := database.Connect()
 	if err!= nil{
 		fmt.Println(err.Error())
-		return token, err
+		return tokens, err
 	}
 	defer db.Close()
 	user := models.User{}
-	err = db.Where(&models.User{Username: username, Password: password}).Take(&models.User{}).Error
+	err = db.Where(&models.User{Username: username, Password: password}).Find(&user).Error
 	if err != nil{
-		return token, err
+		return tokens, err
 	}
-	token, err = RetrieveTokens(user)
+	tokens, err = RetrieveTokens(user)
 	if err != nil{
-		return token, err
+		return tokens, err
 	}
-	return token, nil
+	return tokens, nil
 }

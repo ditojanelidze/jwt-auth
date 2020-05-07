@@ -23,12 +23,12 @@ func Auth(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	token, err := services.Authenticate(data.Username,data.Password)
+	tokens, err := services.Authenticate(data.Username,data.Password)
 	if err != nil {
 		error_response := response.UnautorizedError(err.Error())
 		response.JSON(w, error_response.Code, error_response)
 		return
 	}
 
-	response.JSON(w, http.StatusOK, token)
+	response.JSON(w, http.StatusOK, tokens)
 }
