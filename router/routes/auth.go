@@ -16,4 +16,9 @@ var AuthRoutes = []Route{
 		Method:  http.MethodDelete,
 		Handler: controllers.LogOut,
 	},
+	Route{
+		Uri:     "/refresh",
+		Method:  http.MethodPost,
+		Handler: controllers.RefreshToken,
+	},
 }
