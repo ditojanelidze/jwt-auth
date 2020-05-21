@@ -25,7 +25,6 @@ func RetrieveTokens(user models.User) (map[string]string, error){
 		"refresh_token": refreshToken,
 	}
 	storeInRedis(user, tokens)
-	fmt.Println(err.Error())
 	return tokens, err
 }
 
@@ -39,12 +38,12 @@ func generateAccessToken(id int64) (string, error){
 
 func storeInRedis(user models.User, tokens map[string]string) {
 	fmt.Println(user)
-	redis_client := redis.NewClient(&redis.Options{
+	redisClient := redis.NewClient(&redis.Options{
 		//fmt.Sprintf("%s:%s",initializers.REDIS_URL, initializers.REDIS_PORT)
 		Addr: "127.0.0.1:6379",
 		Password: "",
 		DB: initializers.REDIS_DB,
 	})
 	key := fmt.Sprintf("%s_%d", "auth_tokens", user.ID)
-	redis_client.Set(key, tokens, EXPIRATION)
+	redisClient.Set(key, tokens, EXPIRATION)
 }

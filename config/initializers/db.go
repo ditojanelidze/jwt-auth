@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	DB_DRIVER = "mysql"
+	DB_DRIVER = ""
 	DBURL     = ""
 )
 
