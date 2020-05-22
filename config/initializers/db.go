@@ -12,8 +12,10 @@ var (
 
 func DbInit() {
 	DB_DRIVER = os.Getenv("DB_DRIVER")
-	DBURL = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=true&loc=Local",
+	DBURL = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
 		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASS"),
-		os.Getenv("DB_NAME"))
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PASS"),)
 }
